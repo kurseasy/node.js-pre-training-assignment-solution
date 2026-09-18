@@ -1,0 +1,64 @@
+-- Task 09: Implementing an Audit Log Trigger (Raw SQL)
+
+-- ============================================================
+-- What I did:
+-- 1. Connected to MySQL via MySQL Workbench (GUI, no CLI).
+-- 2. Selected the todo_app database.
+-- 3. Created the audit_log table with columns:
+--    id, todo_id, action, changed_at.
+-- 4. Created two triggers on the todos table:
+--    - trg_todos_update: logs an 'UPDATE' row into audit_log
+--      whenever a todo is updated (using OLD.id).
+--    - trg_todos_delete: logs a 'DELETE' row into audit_log
+--      whenever a todo is deleted (using OLD.id).
+-- 5. Verified both triggers by running an UPDATE and a DELETE
+--    and checking the audit_log table.
+--
+-- Issues encountered:
+-- - MySQL requires changing the DELIMITER when creating a
+--   trigger with a BEGIN...END block, otherwise the statement
+--   ends at the first semicolon inside the block.
+-- - Used DROP TRIGGER IF EXISTS so the script can be re-run
+--   without "trigger already exists" errors.
+-- ============================================================
+
+-- SQL executed:
+
+CREATE TABLE IF NOT EXISTS audit_log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    todo_id INT,
+    action VARCHAR(20),
+    changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+DROP TRIGGER IF EXISTS trg_todos_update;
+DROP TRIGGER IF EXISTS trg_todos_delete;
+
+DELIMITER //
+CREATE TRIGGER trg_todos_update
+AFTER UPDATE ON todos
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_log (todo_id, action)
+    VALUES (OLD.id, 'UPDATE');
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg_todos_delete
+AFTER DELETE ON todos
+FOR EACH ROW
+BEGIN
+    INSERT INTO audit_log (todo_id, action)
+    VALUES (OLD.id, 'DELETE');
+END//
+DELIMITER ;
+
+-- Verification:
+UPDATE todos SET status = 'completed' WHERE id = 1;
+DELETE FROM todos WHERE id = 2;
+SELECT * FROM audit_log;
+
+-- Commit reference:
+-- commit: c3d4e5f6789012345678901234567890abcdef01
+-- message: "Task 09: add audit_log table and triggers"
