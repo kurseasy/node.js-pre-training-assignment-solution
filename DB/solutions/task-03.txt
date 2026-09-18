@@ -1,0 +1,54 @@
+-- Task 03: Filtering and Sorting Todos with Raw SQL
+
+-- ============================================================
+-- What I did:
+-- 1. Connected to MySQL via MySQL Workbench (GUI, no CLI).
+-- 2. Selected the todo_app database.
+-- 3. Ran queries to filter, sort, and search todos.
+--
+-- Issues encountered:
+-- - For the keyword search I used LIKE with % wildcards,
+--   which matches a substring anywhere in the text.
+-- ============================================================
+
+USE todo_app;
+
+-- ============ (Optional) Seed some data to test filtering ============
+-- Insert a user if not exists
+INSERT INTO users (name, email)
+VALUES ('Bob', 'bob@example.com');
+
+-- Insert a few todos with different statuses and titles
+INSERT INTO todos (title, description, status, user_id) VALUES
+('Team meeting', 'Discuss sprint goals', 'active', 2),
+('Buy milk', 'From the grocery store', 'active', 2),
+('Old task', 'Already finished', 'completed', 2),
+('Prepare meeting notes', 'For tomorrow meeting', 'active', 2),
+('Clean up code', 'Refactor old modules', 'completed', 2);
+
+
+-- ============ 1. Filter by Status ============
+-- Select only active todos
+SELECT * FROM todos
+WHERE status = 'active';
+
+-- Select only completed todos
+SELECT * FROM todos
+WHERE status = 'completed';
+
+
+-- ============ 2. Sort by Creation Date ============
+-- Oldest first (ascending)
+SELECT * FROM todos
+ORDER BY created_at ASC;
+
+-- Newest first (descending)
+SELECT * FROM todos
+ORDER BY created_at DESC;
+
+
+-- ============ 3. Search by Keyword ============
+-- Find todos whose title OR description contains 'meeting'
+SELECT * FROM todos
+WHERE title LIKE '%meeting%'
+   OR description LIKE '%meeting%';
