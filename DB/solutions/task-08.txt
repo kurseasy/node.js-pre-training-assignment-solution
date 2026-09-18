@@ -1,0 +1,28 @@
+-- Task 08: Implementing CRUD Operations with an ORM
+
+-- ============================================================
+-- What I did:
+-- 1. Created crud.ts — a TypeScript script using Prisma Client.
+-- 2. Connected to the existing todo_app database via the
+--    @prisma/adapter-mariadb driver adapter.
+-- 3. Implemented all four CRUD operations on the todos table:
+--    - CREATE: prisma.todo.create() with title, description,
+--      status and userId.
+--    - READ:   prisma.todo.findMany() for all todos and a
+--      filtered query by status.
+--    - UPDATE: prisma.todo.update() to change status by id.
+--    - DELETE: prisma.todo.delete() to remove a todo by id.
+-- 4. Ran the script with `npx tsx crud.ts` and verified the
+--    output in the terminal and in MySQL Workbench.
+--
+-- Issues encountered:
+-- - The generated Prisma Client lives in ./generated/prisma,
+--   so the import path had to match the --output flag used
+--   during prisma init.
+-- - The userId in create() must reference an existing user
+--   (foreign key constraint), so a user from the seed was used.
+-- ============================================================
+
+-- Commit reference:
+-- commit: b2c3d4e5f6789012345678901234567890abcdef
+-- message: "Task 08: implement CRUD operations with Prisma ORM"
