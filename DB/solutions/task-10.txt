@@ -1,0 +1,35 @@
+-- Task 10: Caching the User's Todo List with Redis
+
+-- ============================================================
+-- What I did:
+-- 1. Installed Redis on Windows via WSL2 (Ubuntu + redis-server).
+-- 2. Installed the ioredis client library for Node.js.
+-- 3. Created cache.ts with a cache-aside pattern for the
+--    user's todo list:
+--    - Key format: todos:user:{userId}
+--    - On read: check Redis first (cache hit), otherwise
+--      fetch from DB and store with a 5-minute TTL (cache miss).
+--    - On write (create/update/delete): manually delete the
+--      cache key so the next read gets fresh data.
+-- 4. Demonstrated the flow with console logs:
+--    - First request: CACHE MISS
+--    - Second request: CACHE HIT
+--    - After invalidation: CACHE MISS again
+-- 5. Demonstrated TTL by checking redis-cli TTL command and
+--    setting a short TTL for verification.
+--
+-- Issues encountered:
+-- - Redis does not have native Windows support; used WSL2
+--   as recommended by the official Redis documentation.
+-- - Had to ensure the Redis server was running before
+--   executing the Node.js script (sudo service redis-server start).
+-- ============================================================
+
+-- Terminal commands used:
+-- npm install ioredis
+-- npx tsx cache.ts
+-- redis-cli TTL todos:user:1
+
+-- Commit reference:
+-- commit: d4e5f6789012345678901234567890abcdef0123
+-- message: "Task 10: implement Redis caching with TTL and invalidation"
