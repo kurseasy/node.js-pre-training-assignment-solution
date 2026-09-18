@@ -1,0 +1,31 @@
+-- Task 06: Indexes and Query Optimization
+
+-- ============================================================
+-- What I did:
+-- 1. Connected to MySQL via MySQL Workbench (GUI, no CLI).
+-- 2. Selected the todo_app database.
+-- 3. Created an index on todos.status.
+-- 4. Used EXPLAIN to inspect the execution plan of a query
+--    that filters todos by status.
+--
+-- Issues encountered:
+-- - MySQL uses EXPLAIN (not EXPLAIN ANALYZE like PostgreSQL).
+--   EXPLAIN ANALYZE is supported from MySQL 8.0.18+.
+-- - Index name must be unique within the table.
+-- ============================================================
+
+USE todo_app;
+
+-- ============ 1. Create index on status ============
+CREATE INDEX idx_todos_status
+ON todos(status);
+
+-- ============ 2. Analyze query performance ============
+-- Show execution plan BEFORE / AFTER index:
+EXPLAIN SELECT * FROM todos WHERE status = 'active';
+
+-- Optional (MySQL 8.0.18+): actual runtime metrics
+EXPLAIN ANALYZE SELECT * FROM todos WHERE status = 'active';
+
+-- ============ Verify index exists ============
+SHOW INDEX FROM todos;
