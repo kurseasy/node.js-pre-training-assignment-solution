@@ -1,0 +1,54 @@
+-- Task 04: Creating a Users Table and Linking Todos to Users with a Foreign Key
+
+-- ============================================================
+-- What I did:
+-- 1. Connected to MySQL via MySQL Workbench (GUI, no CLI).
+-- 2. Recreated the users table with all required columns.
+-- 3. Ensured todos table has a user_id column (FK -> users.id).
+--
+-- Issues encountered:
+-- - The users table already existed from Task 01, so I used
+--   DROP TABLE IF EXISTS to start clean.
+-- - The todos table already had a user_id column, so I first
+--   had to drop the old FK and the column before re-adding them
+--   (MySQL does not support ADD COLUMN IF NOT EXISTS easily).
+-- ============================================================
+
+USE todo_app;
+
+-- ============ 1. Create the users table ============
+DROP TABLE IF EXISTS todos;   -- drop first because of FK
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============ 2. Create todos table WITHOUT user_id ============
+-- (we will add user_id + FK in the next step to match the task)
+CREATE TABLE todos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT,
+    status VARCHAR(50) DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============ 3. Alter todos: add user_id column ============
+ALTER TABLE todos
+ADD COLUMN user_id INT;
+
+-- ============ 4. Alter todos: add foreign key ============
+ALTER TABLE todos
+ADD CONSTRAINT fk_todos_user
+FOREIGN KEY (user_id) REFERENCES users(id);
+
+-- ============ Verify ============
+SHOW CREATE TABLE users;
+SHOW CREATE TABLE todos;
+
+DESCRIBE users;
+DESCRIBE todos;
