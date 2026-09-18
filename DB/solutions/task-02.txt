@@ -1,0 +1,48 @@
+-- Task 02: Basic CRUD Operations on the "todos" Table with Raw SQL
+
+-- ============================================================
+-- What I did:
+-- 1. Connected to MySQL via MySQL Workbench (GUI, no CLI).
+-- 2. Selected the todo_app database.
+-- 3. Performed CRUD operations on the todos table:
+--    - Create: inserted a new todo
+--    - Read: selected all todos
+--    - Update: changed the status of a specific todo by id
+--    - Delete: removed a todo by id
+--
+-- Issues encountered:
+-- - The todos table has a foreign key user_id -> users.id,
+--   so I had to insert a user first before inserting a todo.
+-- ============================================================
+
+USE todo_app;
+
+-- First, create a user (required because todos.user_id is a foreign key)
+INSERT INTO users (name, email)
+VALUES ('Alice', 'alice@example.com');
+
+-- ============ CREATE ============
+-- Insert a new todo
+INSERT INTO todos (title, description, status, user_id)
+VALUES ('Buy groceries', 'Milk, bread, eggs', 'active', 1);
+
+-- ============ READ ============
+-- Select all todos with all columns
+SELECT * FROM todos;
+
+-- ============ UPDATE ============
+-- Change the status of a specific todo (id = 1)
+UPDATE todos
+SET status = 'completed'
+WHERE id = 1;
+
+-- Verify the update
+SELECT * FROM todos WHERE id = 1;
+
+-- ============ DELETE ============
+-- Remove a specific todo (id = 1)
+DELETE FROM todos
+WHERE id = 1;
+
+-- Verify the deletion
+SELECT * FROM todos;
