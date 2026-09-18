@@ -2,6 +2,16 @@
 const express = require('express');
 const app = express();
 
-// TODO: implement todos storage and GET /todos logic
+// In-memory storage for todos
+const todos = [
+  { id: 1, title: 'Buy milk', completed: false },
+  { id: 2, title: 'Walk the dog', completed: true },
+  { id: 3, title: 'Write code', completed: false },
+];
 
-module.exports = app; 
+// GET /todos — return the list of todos
+app.get('/todos', (req, res) => {
+  res.json(todos);
+});
+
+module.exports = app;
