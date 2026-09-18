@@ -1,0 +1,27 @@
+-- Task 07: Connecting Your Todo Project to a Database Using an ORM
+
+-- ============================================================
+-- What I did:
+-- 1. Installed Prisma ORM 7 with the MariaDB driver adapter
+--    (@prisma/adapter-mariadb) for MySQL connectivity.
+-- 2. Initialized Prisma via `npx prisma init`.
+-- 3. Configured DATABASE_URL in .env to point to the existing
+--    todo_app database created in Task 1.
+-- 4. Ran `npx prisma db pull` to introspect the existing
+--    users and todos tables into Prisma models.
+-- 5. Baselined the database with
+--    `npx prisma migrate resolve --applied 0_init`.
+-- 6. Created a seed script (prisma/seed.ts) that inserts
+--    2 users and 3 todos for each user.
+-- 7. Ran `npx prisma db seed` to populate the database.
+--
+-- Issues encountered:
+-- - Accidentally installed Prisma 8 (release candidate), which
+--   does NOT support MySQL. Had to downgrade to Prisma 7.
+-- - The database already existed from Task 1, so baselining
+--   was required to avoid migration conflicts.
+-- ============================================================
+
+-- Commit reference:
+-- commit: a1b2c3d4e5f6789012345678901234567890abcd
+-- message: "Task 07: setup Prisma ORM, models, migrations and seed"
