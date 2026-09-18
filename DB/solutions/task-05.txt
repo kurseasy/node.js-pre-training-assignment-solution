@@ -1,0 +1,50 @@
+-- Task 05: Aggregation and Grouping in SQL
+
+-- ============================================================
+-- What I did:
+-- 1. Connected to MySQL via MySQL Workbench (GUI, no CLI).
+-- 2. Selected the todo_app database.
+-- 3. Ran aggregation queries: COUNT, GROUP BY, LEFT JOIN, HAVING/IS NULL.
+--
+-- Issues encountered:
+-- - None. All queries ran successfully.
+-- ============================================================
+
+USE todo_app;
+
+-- ============ (Optional) Seed test data ============
+-- Only run this if your tables are empty.
+-- Users
+INSERT INTO users (name, email) VALUES
+('Alice', 'alice@example.com'),
+('Bob',   'bob@example.com'),
+('Carol', 'carol@example.com');   -- Carol has NO todos on purpose
+
+-- Todos
+INSERT INTO todos (title, status, user_id) VALUES
+('Buy milk',        'active',    1),
+('Team meeting',    'active',    1),
+('Old task',        'completed', 1),
+('Write report',    'active',    2),
+('Fix bug',         'completed', 2),
+('Read book',       'completed', 2);
+
+
+-- ============ 1. Count Todos by Status ============
+SELECT status, COUNT(*) AS todo_count
+FROM todos
+GROUP BY status;
+
+
+-- ============ 2. Count Todos per User ============
+SELECT u.name, COUNT(t.id) AS todo_count
+FROM users u
+LEFT JOIN todos t ON t.user_id = u.id
+GROUP BY u.id, u.name;
+
+
+-- ============ 3. Find Users with No Todos ============
+SELECT u.id, u.name, u.email
+FROM users u
+LEFT JOIN todos t ON t.user_id = u.id
+WHERE t.id IS NULL;
