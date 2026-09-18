@@ -1,14 +1,27 @@
----
-topic: "Express Query Params"
-taskNumber: 10
----
+// Express.js GET /todos/search endpoint with query params
+const express = require('express');
+const router = express.Router();
 
-## Task 10: Search ToDos by Query Params
+// In-memory storage for todos
+const todos = [
+  { id: 1, title: 'Buy milk', completed: false },
+  { id: 2, title: 'Walk the dog', completed: true },
+  { id: 3, title: 'Write code', completed: false },
+  { id: 4, title: 'Read book', completed: true },
+];
 
-**Description:**  
-Create a GET `/todos/search` endpoint that returns todos filtered by query parameters (e.g., `?completed=true`).
+// GET /todos/search?completed=true
+router.get('/todos/search', (req, res) => {
+  const { completed } = req.query;
 
-**Example:**
-```js
-// GET /todos/search?completed=true => [{...completed:true...}]
-``` 
+  let result = todos;
+
+  if (completed !== undefined) {
+    const isCompleted = completed === 'true';
+    result = result.filter((t) => t.completed === isCompleted);
+  }
+
+  res.json(result);
+});
+
+module.exports = router;
