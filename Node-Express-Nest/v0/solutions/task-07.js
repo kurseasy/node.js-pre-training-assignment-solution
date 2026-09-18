@@ -1,3 +1,7 @@
 // Express.js error handler middleware for ToDo API
-// TODO: implement
-module.exports = {}; 
+function errorHandler(err, req, res, next) {
+  console.error(err.message);
+  res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
+}
+
+module.exports = errorHandler;
